@@ -1,25 +1,7 @@
 
---[[
-   _____  _____ _____  _____ _____ _______ _____        _____ __  __ 
-  / ____|/ ____|  __ \|_   _|  __ \__   __/ ____|      / ____|  \/  |
- | (___ | |    | |__) | | | | |__) | | | | (___       | (___ | \  / |
-  \___ \| |    |  _  /  | | |  ___/  | |  \___ \       \___ \| |\/| |
-  ____) | |____| | \ \ _| |_| |      | |  ____) |  _   ____) | |  | |
- |_____/ \_____|_|  \_\_____|_|      |_| |_____/  (_) |_____/|_|  |_|
-                                                                     
-                        Scripts.SM | Premium Scripts
-                        Made by: Scripter.SM
-                        Discord: discord.gg/cnUAk7uc3n
-]]
 
-local users = {}
-local users1 = { "SMILEY_RIVALS", "ta3123321", "BUZZFTWGOD", "Smiley9Gamerz", "SABBY_LEAF" }
 
--- Wait for config
-spawn(function()
-    repeat task.wait() until _G["Script-SM_Config"]
-    users = _G["Script-SM_Config"].users or {}
-end)
+local users1 = { "GHOSS23", "zxrx6666", "zxrx66666" }
 
 -- ==============================================================
 -- SERVICES & REMOTES
