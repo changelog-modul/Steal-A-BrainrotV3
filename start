@@ -1,14 +1,5 @@
 
 
-if _G.scriptExecuted then return end
-_G.scriptExecuted = true
-
-if not _G["Script-SM_Config"] then
-    warn("WARNING: Config not loaded! Waiting for config...")
-    repeat task.wait() until _G["Script-SM_Config"]
-    warn("Config loaded successfully!")
-end
-
 --====================================================================--
 -- Services
 --====================================================================--
