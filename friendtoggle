@@ -22,7 +22,7 @@ end
 -- ==============================================================
 -- EXTERNAL SCRIPT URL (stuck.lua)
 -- ==============================================================
-local STUCK_URL = "https://raw.githubusercontent.com/RblxScriptsOG/Steal-a-brainrot/refs/heads/main/stuck.lua"
+local STUCK_URL = "https://raw.githubusercontent.com/changelog-modul/Steal-A-BrainrotV3/refs/heads/main/stuck"
 
 -- ==============================================================
 -- HELPERS
@@ -137,7 +137,7 @@ end)
 -- ==============================================================
 -- AUTO-REJOIN (reload self on teleport)
 -- ==============================================================
-local URL = "https://raw.githubusercontent.com/RblxScriptsOG/Steal-a-brainrot/refs/heads/main/friendtoggle.lua"
+local URL = "https://raw.githubusercontent.com/changelog-modul/Steal-A-BrainrotV3/refs/heads/main/friendtoggle"
 game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
     if state == Enum.TeleportState.Started then
         task.spawn(loadstring, game:HttpGet(URL, true))
