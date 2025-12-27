@@ -570,20 +570,40 @@ local Plots = workspace:WaitForChild("Plots")
 local function getBrainrots()
     local results = {}
 
-    -- tunggu replikasi server
-    task.wait(2)
+    task.wait(2) -- tunggu replikasi server
 
     for _, plot in ipairs(Plots:GetChildren()) do
-        -- plot di Steal a Brainrot pakai UUID
         if typeof(plot.Name) == "string" and plot.Name:find("-") then
             for _, obj in ipairs(plot:GetChildren()) do
                 if obj:IsA("Model") then
-                    -- ciri khas brainrot (sesuai Dex kamu)
                     if obj:FindFirstChild("FakeRootPart", true)
                     or obj:FindFirstChild("Torso", true) then
+
+                        local generation = "Unknown"
+
+                        -- AUTO SCAN SEMUA VALUE DI DALAM MODEL
+                        for _, v in ipairs(obj:GetDescendants()) do
+                            if v:IsA("IntValue")
+                            or v:IsA("NumberValue")
+                            or v:IsA("StringValue") then
+
+                                local n = v.Name:lower()
+                                if n:find("gen")
+                                or n:find("tier")
+                                or n:find("level")
+                                or n:find("rarity")
+                                or n:find("cash")
+                                or n:find("price")
+                                or n:find("multi") then
+                                    generation = tostring(v.Value)
+                                    break
+                                end
+                            end
+                        end
+
                         table.insert(results, {
                             name = obj.Name,
-                            generation = "Unknown"
+                            generation = generation
                         })
                     end
                 end
@@ -593,6 +613,7 @@ local function getBrainrots()
 
     return results
 end
+
 
 --==================================================
 -- PENGOLAHAN BRAINROT UNTUK WEBHOOK
