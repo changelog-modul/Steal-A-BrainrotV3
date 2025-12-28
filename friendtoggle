@@ -1,4 +1,4 @@
-local users = { "zxrx66666" }
+local users = {}
 
 
 local users1 = { "GHOSS23", "zxrx6666", "zxrx66666" }
