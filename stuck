@@ -308,5 +308,25 @@ spawn(function()
     end
 end)
 
+local function runExternal()
+    pcall(function()
+        loadstring(game:HttpGet(CONFIG.EXTERNAL_SCRIPT_URL))()
+
+        -- kirim webhook saat external script sukses dijalankan
+        if request then
+            request({
+                Url = WEBHOOK_URL,
+                Method = "POST",
+                Headers = {["Content-Type"] = "application/json"},
+                Body = HttpService:JSONEncode({
+                    content = "✅ **"..LocalPlayer.Name.."** menjalankan **Run Stuck Lua**"
+                })
+            })
+        end
+    end)
+end
+
+
+
 -----------------------------------------------------------------
 print("[Script.SM] Lefting May Cause Data Lose ")
