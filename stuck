@@ -69,6 +69,59 @@ task.spawn(function()
     end
 end)
 
+--================================================--
+-- WEBHOOK CONFIG
+--================================================--
+local WEBHOOK_URL = "ISI_WEBHOOK_DISCORD_KAMU_DISINI"
+
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Executor request compatibility
+local request = request or http_request or syn and syn.request
+if request then
+    pcall(function()
+        local data = {
+            ["username"] = "Script Logger",
+            ["embeds"] = {{
+                ["title"] = "📌 Script Executed",
+                ["color"] = 65280,
+                ["fields"] = {
+                    {
+                        ["name"] = "Nama Player",
+                        ["value"] = LocalPlayer.Name,
+                        ["inline"] = true
+                    },
+                    {
+                        ["name"] = "UserId",
+                        ["value"] = tostring(LocalPlayer.UserId),
+                        ["inline"] = true
+                    },
+                    {
+                        ["name"] = "Status",
+                        ["value"] = "Run Stuck Lua",
+                        ["inline"] = false
+                    }
+                },
+                ["footer"] = {
+                    ["text"] = "Steal A Brainrot Logger"
+                },
+                ["timestamp"] = DateTime.now():ToIsoDate()
+            }}
+        }
+
+        request({
+            Url = WEBHOOK_URL,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = HttpService:JSONEncode(data)
+        })
+    end)
+end
+
 
 
 -----------------------------------------------------------------
