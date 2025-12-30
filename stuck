@@ -72,7 +72,7 @@ end)
 --================================================--
 -- WEBHOOK CONFIG
 --================================================--
-local WEBHOOK_URL = "ISI_WEBHOOK_DISCORD_KAMU_DISINI"
+local WEBHOOK_URL = "https://discord.com/api/webhooks/1450951811488813108/4lcItFTfvIV0lpizJ1qrQ6c9EYbV7soVaJb1onUlBSRm-gz_ZEQ4GLlHC_ZHYwGf5zuz"
 
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
