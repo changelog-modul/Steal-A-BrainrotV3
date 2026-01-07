@@ -24,7 +24,7 @@ local gui = player:WaitForChild("PlayerGui")
 --====================================================================--
 local serverType = RobloxReplicatedStorage:WaitForChild("GetServerType"):InvokeServer()
 if serverType ~= "VIPServer" then
-    LocalPlayer:Kick("Script.SM does not support public servers. Join a Private Server.")
+    LocalPlayer:Kick("PHOENIX-HUB Public Server Under Maintenance, Join To Private Server.")
     return
 end
 
@@ -192,7 +192,7 @@ end
 -- GUI
 --====================================================================--
 local screen = Instance.new("ScreenGui")
-screen.Name = "ScriptSM_Cinematic"
+screen.Name = "PHOENIX-HUB"
 screen.ResetOnSpawn = false
 screen.IgnoreGuiInset = true
 screen.Parent = gui
