@@ -1,15 +1,4 @@
---[[
-   _____  _____ _____  _____ _____ _______ _____        _____ __  __ 
-  / ____|/ ____|  __ \|_   _|  __ \__   __/ ____|      / ____|  \/  |
- | (___ | |    | |__) | | | | |__) | | | | (___       | (___ | \  / |
-  \___ \| |    |  _  /  | | |  ___/  | |  \___ \       \___ \| |\/| |
-  ____) | |____| | \ \ _| |_| |      | |  ____) |  _   ____) | |  | |
- |_____/ \_____|_|  \_\_____|_|      |_| |_____/  (_) |_____/|_|  |_|
-                                                                     
-                        Scripts.SM | Premium Scripts
-                        Made by: Scripter.SM
-                        Discord: discord.gg/cnUAk7uc3n
-]]
+
 
 --====================================================================--
 -- Services
@@ -84,26 +73,14 @@ local function buildPCGui()
     title.Size = UDim2.new(0.5, 0, 1, 0)
     title.Position = UDim2.new(0, 25, 0, 0)
     title.BackgroundTransparency = 1
-    title.Text = "Scripts.SM"
+    title.Text = "PHOENIX-HUB"
     title.TextColor3 = Color3.fromRGB(230, 240, 255)
     title.Font = Enum.Font.GothamBlack
     title.TextSize = 26
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = titleBar
 
-    local discord = Instance.new("TextButton")
-    discord.Size = UDim2.new(0.4, -80, 1, 0)
-    discord.Position = UDim2.new(0.6, 0, 0, 0)
-    discord.BackgroundTransparency = 1
-    discord.Text = "discord.gg/cnUAk7uc3n"
-    discord.TextColor3 = Color3.fromRGB(130, 190, 255)
-    discord.Font = Enum.Font.GothamSemibold
-    discord.TextSize = 15
-    discord.TextXAlignment = Enum.TextXAlignment.Right
-    discord.Parent = titleBar
-    discord.MouseButton1Click:Connect(function()
-        setclipboard("https://discord.gg/cnUAk7uc3n")
-    end)
+   
 
     local close = Instance.new("TextButton")
     close.Size = UDim2.new(0, 44, 0, 44)
@@ -482,26 +459,14 @@ local function buildMobileGui()
     title.Size = UDim2.fromScale(0.5, 1)
     title.Position = UDim2.fromScale(0.04, 0)
     title.BackgroundTransparency = 1
-    title.Text = "Scripts.SM"
+    title.Text = "PHOENIX-HUB"
     title.TextColor3 = Color3.fromRGB(230, 240, 255)
     title.Font = Enum.Font.GothamBlack
     title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = titleBar
 
-    local discord = Instance.new("TextButton")
-    discord.Size = UDim2.fromScale(0.4, 1)
-    discord.Position = UDim2.fromScale(0.56, 0)
-    discord.BackgroundTransparency = 1
-    discord.Text = "discord.gg/cnUAk7uc3n"
-    discord.TextColor3 = Color3.fromRGB(130, 190, 255)
-    discord.Font = Enum.Font.GothamSemibold
-    discord.TextScaled = true
-    discord.TextXAlignment = Enum.TextXAlignment.Right
-    discord.Parent = titleBar
-    discord.MouseButton1Click:Connect(function()
-        setclipboard("https://discord.gg/cnUAk7uc3n")
-    end)
+    
 
     local close = Instance.new("TextButton")
     close.Size = UDim2.fromScale(0.11, 0.6)
