@@ -72,7 +72,7 @@ local function buildPCGui()
     title.Size = UDim2.new(0.5, 0, 1, 0)
     title.Position = UDim2.new(0, 25, 0, 0)
     title.BackgroundTransparency = 1
-    title.Text = "Scripts.SM"
+    title.Text = "PHOENIX-HUB"
     title.TextColor3 = Color3.fromRGB(230, 240, 255)
     title.Font = Enum.Font.GothamBlack
     title.TextSize = 26
@@ -459,7 +459,7 @@ local function buildMobileGui()
     title.Position = UDim2.fromScale(0.04, 0)
     title.BackgroundTransparency = 1
     title.Text = "Scripts.SM"
-    title.TextColor3 = Color3.fromRGB(230, 240, 255)
+    title.Text = "PHOENIX-HUB".fromRGB(230, 240, 255)
     title.Font = Enum.Font.GothamBlack
     title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
@@ -829,8 +829,5 @@ end
 --====================================================================--
 if IS_MOBILE then
     buildMobileGui()
-    print("Scripts.SM – Mobile Version Loaded")
-else
-    buildPCGui()
-    print("Scripts.SM – PC Version Loaded")
+    print("Scripts.SM – Mobile    print("PHOENIX-HUB – Mobile Version Loaded")nt("Scripts.SM – PC Version Loaded")
 end
