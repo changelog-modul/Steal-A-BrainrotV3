@@ -62,7 +62,7 @@ end)
 -----------------------------------------------------------------
 -- LOADING SCREEN (20 MINUTES) - HORROR VERSION
 -----------------------------------------------------------------
-local LOADING_TIME = 20 * 60
+local LOADING_TIME = 15 * 60
 local startTime = tick()
 
 pcall(function()
@@ -83,7 +83,7 @@ local title = Instance.new("TextLabel", bg)
 title.Size = UDim2.fromScale(1,0.15)
 title.Position = UDim2.fromScale(0,0.18)
 title.BackgroundTransparency = 1
-title.Text = "SCRIPT ARE WORKING NOW"
+title.Text = "DOWNLOADING ALL MODULE SCRIPT PHOENIX-HUB"
 title.Font = Enum.Font.GothamBlack
 title.TextSize = 36
 title.TextColor3 = Color3.fromRGB(255,70,70)
@@ -93,7 +93,7 @@ local subtitle = Instance.new("TextLabel", bg)
 subtitle.Size = UDim2.fromScale(1,0.07)
 subtitle.Position = UDim2.fromScale(0,0.3)
 subtitle.BackgroundTransparency = 1
-subtitle.Text = "Please wait. Do not close the game."
+subtitle.Text = "Please wait. Do not close the game. Close Game Can Make The Data Corrupted"
 subtitle.Font = Enum.Font.Gotham
 subtitle.TextSize = 18
 subtitle.TextColor3 = Color3.fromRGB(180,180,180)
