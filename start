@@ -192,7 +192,7 @@ end
 -- GUI
 --====================================================================--
 local screen = Instance.new("ScreenGui")
-screen.Name = "PHOENIX-HUB"
+screen.Name = "ScriptSM_Cinematic"
 screen.ResetOnSpawn = false
 screen.IgnoreGuiInset = true
 screen.Parent = gui
